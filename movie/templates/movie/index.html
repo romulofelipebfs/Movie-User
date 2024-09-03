@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "movie/styles.css" %}">
+    <title>Index</title>
+</head>
+<body>
+    <ul>
+        {% for filme in filmes %}
+        <li>
+            {{ filme.titulo }} 
+            {% if user.is_authenticated %}
+                {% if filme in user.filmes_favoritos.all %}
+                    <a href="{% url 'toggle-favorito' filme.id %}">Desfavoritar</a>
+                {% else %}
+                    <a href="{% url 'toggle-favorito' filme.id %}">Favoritar</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'my-login' %}">Favoritar</a> <!-- Redireciona para login se não autenticado -->
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
